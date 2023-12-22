@@ -15,7 +15,9 @@ public class GuestService {
 		 *  room list. 
 		 */
 		
-		return null; 
+		List<Guest> copy = new List<Room>(guests);
+		copy.stream().filter(el->el.preferredRooms.get(0).equals(room)).collect(Collectors.toList());
+		return copy;
 
 	}
 
@@ -27,6 +29,19 @@ public class GuestService {
 		 *  order they were inserted.
 		 */
 
+		if(guest.isLoyaltyProgramMember()){
+			int i = 0; 
+			for (iMthis.checkinList.size(); i++){
+				if(this.checkinList.get(i).isLoyaltyProgramMember()){
+					continue;
+				}
+
+				break;
+			}
+			this.checkinList.add(i, guest);
+		} else {
+			this.checkinList.add(guest);
+		}
 	}
 	
 	public void swapPosition(Guest guest1, Guest guest2) {
@@ -35,6 +50,14 @@ public class GuestService {
 		 *  3.  Swaps the position of the two provided guests within the checkinList.
 		 *  If guests are not currently in the list no action is required.
 		 */ 
+
+		 int position1 = this.checkinList.indexOf(guest1);
+		 int position2 = this.checkinList.indexOf(guest2);
+
+		 if(position1 != -1 && position2 != -1){
+			this.checkinList.set(position1, guest2);
+			this.checkinList.set(position2, guest1);
+		 }
 
 	}
 
